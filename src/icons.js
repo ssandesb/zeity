@@ -1,0 +1,86 @@
+import {
+  BrainCircuit,
+  Palette,
+  Coffee,
+  Dumbbell,
+  Users,
+  ClipboardList,
+  Folder,
+  BookOpen,
+  Music,
+  Moon,
+  Sun,
+  Heart,
+  Briefcase,
+  Sparkles,
+  Leaf,
+  Rocket,
+  Code2,
+  Camera,
+  Plane,
+  GraduationCap,
+} from 'lucide-react'
+
+const map = {
+  BrainCircuit,
+  Palette,
+  Coffee,
+  Dumbbell,
+  Users,
+  ClipboardList,
+  BookOpen,
+  Music,
+  Moon,
+  Sun,
+  Heart,
+  Briefcase,
+  Sparkles,
+  Leaf,
+  Rocket,
+  Code2,
+  Camera,
+  Plane,
+  GraduationCap,
+}
+
+// Order shown in the icon picker
+export const iconChoices = [
+  'BrainCircuit',
+  'Code2',
+  'Rocket',
+  'Briefcase',
+  'Palette',
+  'Camera',
+  'Music',
+  'BookOpen',
+  'GraduationCap',
+  'Dumbbell',
+  'Leaf',
+  'Heart',
+  'Coffee',
+  'Moon',
+  'Sun',
+  'Users',
+  'Plane',
+  'Sparkles',
+  'ClipboardList',
+]
+
+export const colorChoices = [
+  { color: '#4f46e5', gradient: ['#6366f1', '#4338ca'] },
+  { color: '#7c3aed', gradient: ['#8b5cf6', '#6d28d9'] },
+  { color: '#db2777', gradient: ['#ec4899', '#be185d'] },
+  { color: '#e11d48', gradient: ['#fb7185', '#be123c'] },
+  { color: '#ea580c', gradient: ['#f97316', '#c2410c'] },
+  { color: '#d97706', gradient: ['#f59e0b', '#b45309'] },
+  { color: '#16a34a', gradient: ['#22c55e', '#15803d'] },
+  { color: '#0d9488', gradient: ['#14b8a6', '#0f766e'] },
+  { color: '#0891b2', gradient: ['#06b6d4', '#0e7490'] },
+  { color: '#2563eb', gradient: ['#3b82f6', '#1d4ed8'] },
+  { color: '#475569', gradient: ['#64748b', '#334155'] },
+  { color: '#9333ea', gradient: ['#a855f7', '#7e22ce'] },
+]
+
+export function getIcon(name) {
+  return map[name] || Folder
+}
