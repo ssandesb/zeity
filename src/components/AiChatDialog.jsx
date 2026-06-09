@@ -239,8 +239,9 @@ export default function AiChatDialog({
 
       setMessages([...history, { role: 'assistant', content: finalAnswer }])
 
-    } catch {
+    } catch (err) {
 
+      const detail = err instanceof Error ? err.message : ''
       setMessages([
 
         ...history,
@@ -249,7 +250,9 @@ export default function AiChatDialog({
 
           role: 'assistant',
 
-          content: 'Could not reach Zeity AI. Check your Groq key in .env and try again.',
+          content: detail
+            ? `Could not reach Zeity AI: ${detail}`
+            : 'Could not reach Zeity AI. Check your Groq key in Netlify env and try again.',
 
         },
 

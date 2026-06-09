@@ -9,7 +9,7 @@ export async function fetchChatCompletion({
   proteinLog = {},
   signal,
 }) {
-  const endpoint = import.meta.env.DEV ? '/api/chat' : '/.netlify/functions/chat'
+  const endpoint = '/api/chat'
 
   const res = await fetch(endpoint, {
     method: 'POST',
@@ -29,7 +29,14 @@ export async function fetchChatCompletion({
 
   if (!res.ok) {
     const msg = await res.text().catch(() => '')
-    throw new Error(msg || `Chat failed (${res.status})`)
+    let detail = msg
+    try {
+      const parsed = JSON.parse(msg)
+      detail = parsed.details || parsed.error || msg
+    } catch {
+      /* use raw text */
+    }
+    throw new Error(detail || `Chat failed (${res.status})`)
   }
 
   return res.json()

@@ -1,4 +1,10 @@
-const { Groq } = require('groq-sdk')
+import { Groq } from 'groq-sdk'
+import {
+  buildChatSystemPrompt,
+  groqApiKeyFromEnv,
+  normalizeAiActions,
+  tryParseChatJson,
+} from '../../shared/zeityChatCore.js'
 
 function cors(res, origin = '*') {
   res.headers = {
@@ -19,16 +25,12 @@ function safeJsonStringify(x) {
   }
 }
 
-exports.handler = async function handler(event) {
+export async function handler(event) {
   if (event.httpMethod === 'OPTIONS') {
     return cors({ statusCode: 204, headers: {}, body: '' }, '*')
   }
 
   try {
-    const { buildChatSystemPrompt, normalizeAiActions, tryParseChatJson } = await import(
-      '../../shared/zeityChatCore.js'
-    )
-
     const origin = (event.headers && (event.headers.origin || event.headers.Origin)) || '*'
 
     let parsed = {}
@@ -59,14 +61,15 @@ exports.handler = async function handler(event) {
       )
     }
 
-    const groqApiKey =
-      process.env.GROQ_API_KEY || process.env.groq || process.env.GROQ_KEY || ''
+    const groqApiKey = groqApiKeyFromEnv(process.env)
     if (!groqApiKey) {
       return cors(
         {
           statusCode: 500,
           headers: { 'Content-Type': 'application/json' },
-          body: safeJsonStringify({ error: 'Missing GROQ_API_KEY in environment variables' }),
+          body: safeJsonStringify({
+            error: 'Missing Groq API key (set GROQ_API_KEY or groq in Netlify env)',
+          }),
         },
         origin,
       )
