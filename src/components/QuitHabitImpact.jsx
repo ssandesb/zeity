@@ -10,6 +10,7 @@ import { formatTotal } from '../utils/habitSimulation'
 import HabitSimAreaChart from './HabitSimAreaChart'
 import HabitSimMilestones from './HabitSimMilestones'
 import QuitHabitHorizonCard from './QuitHabitHorizonCard'
+import AtomicHabitsQuadrants from './AtomicHabitsQuadrants'
 
 function LowEnergySvg({ level }) {
   const fill = Math.max(8, Math.min(92, level))
@@ -96,7 +97,7 @@ function StatTile({ icon: Icon, label, value, unit, accent }) {
 }
 
 export default function QuitHabitImpact({ model }) {
-  const { habitName, dailyMinutes, motivation, accentColor, milestones } = model
+  const { habitName, dailyMinutes, motivation, accentColor, milestones, atomicHabits } = model
   const accent = accentColor || '#34d399'
 
   const [selectedHorizon, setSelectedHorizon] = useState(() => horizonToId(model.yearsProjection))
@@ -215,6 +216,10 @@ export default function QuitHabitImpact({ model }) {
           </div>
         )}
       </div>
+
+      {atomicHabits?.length > 0 && (
+        <AtomicHabitsQuadrants quadrants={atomicHabits} habitName={habitName} accent={accent} />
+      )}
 
       <div className="qhab-grid">
         <section className="qhab-panel qhab-panel--before" aria-label="Before quitting">

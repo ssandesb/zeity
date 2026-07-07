@@ -4921,3 +4921,193 @@ button {
 .qhab-equiv-chip {
   font-size: 12px;
 }
+
+/* ── Atomic Habits quadrants (Passt) ── */
+.ahq-panel {
+  margin-bottom: 16px;
+  padding: 18px;
+}
+
+.ahq-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.ahq-head h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.ahq-head p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.5;
+  max-width: 520px;
+}
+
+.ahq-stack {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 2px;
+  min-width: 56px;
+}
+
+.ahq-stack-rock {
+  animation: ahq-rock-pump 2.4s ease-in-out infinite;
+  animation-delay: calc(var(--ahq-stack-i) * 0.18s);
+}
+
+@keyframes ahq-rock-pump {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-3px) scale(1.04); }
+}
+
+.ahq-rock {
+  display: block;
+  transform: scale(var(--ahq-rock-scale, 1));
+  transition: transform 0.35s ease;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.ahq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 680px) {
+  .ahq-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ahq-quadrant {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  padding: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  animation: ahq-fade-in 0.45s ease both;
+  animation-delay: calc(var(--ahq-i) * 0.08s);
+}
+
+@keyframes ahq-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ahq-quadrant:hover {
+  border-color: color-mix(in srgb, var(--ahq-accent) 40%, var(--line));
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.ahq-quadrant-top {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.ahq-quadrant-rock-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.ahq-law-num {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--ahq-accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+}
+
+.ahq-quadrant-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.ahq-loop-step {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+
+.ahq-quadrant-meta h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.ahq-build-ref {
+  display: block;
+  font-size: 11px;
+  color: var(--text-2);
+  margin-top: 2px;
+}
+
+.ahq-quadrant-icon {
+  color: var(--ahq-accent);
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.ahq-framework {
+  margin: 0 0 10px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-2);
+}
+
+.ahq-suggestion {
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--ahq-accent) 8%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--ahq-accent) 18%, var(--line));
+}
+
+.ahq-suggestion strong {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ahq-accent);
+  margin-bottom: 4px;
+}
+
+.ahq-suggestion p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.ahq-footnote {
+  margin: 14px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.ahq-quadrant:hover .ahq-rock {
+  transform: scale(calc(var(--ahq-rock-scale, 1) * 1.08));
+}

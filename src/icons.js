@@ -28,6 +28,10 @@ import {
   Target,
   Flame,
   Telescope,
+  EyeOff,
+  Ban,
+  Lock,
+  CircleSlash,
 } from 'lucide-react'
 
 const map = {
@@ -59,6 +63,10 @@ const map = {
   Target,
   Flame,
   Telescope,
+  EyeOff,
+  Ban,
+  Lock,
+  CircleSlash,
 }
 
 // Order shown in the icon picker

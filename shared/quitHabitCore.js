@@ -15,9 +15,49 @@ export const QUIT_EQUIVALENTS = [
   { threshold: 25, label: 'focus block', plural: 'focus blocks' },
 ]
 
+export const ATOMIC_HABITS_META = [
+  {
+    law: 1,
+    loopStep: 'Cue',
+    buildLaw: 'Make it obvious',
+    breakLaw: 'Make it invisible',
+    framework: 'Remove cues from your environment so the habit never starts.',
+    icon: 'EyeOff',
+    rockTone: '#6b7280',
+  },
+  {
+    law: 2,
+    loopStep: 'Craving',
+    buildLaw: 'Make it attractive',
+    breakLaw: 'Make it unattractive',
+    framework: 'Reframe the habit — highlight costs and benefits of avoiding it.',
+    icon: 'Ban',
+    rockTone: '#78716c',
+  },
+  {
+    law: 3,
+    loopStep: 'Response',
+    buildLaw: 'Make it easy',
+    breakLaw: 'Make it difficult',
+    framework: 'Add friction and obstacles between you and the behavior.',
+    icon: 'Lock',
+    rockTone: '#57534e',
+  },
+  {
+    law: 4,
+    loopStep: 'Reward',
+    buildLaw: 'Make it satisfying',
+    breakLaw: 'Make it unsatisfying',
+    framework: 'Attach an immediate cost or accountability when you slip.',
+    icon: 'CircleSlash',
+    rockTone: '#44403c',
+  },
+]
+
 export const QUIT_HABIT_SYSTEM = [
   'You parse BAD HABITS the user wants to QUIT into a simple impact model.',
   'Focus on time spent — no guilt, no moralizing. Return ONLY valid JSON (no markdown).',
+  'Use James Clear\'s Atomic Habits — INVERT the four laws to break bad habits.',
   '',
   'Schema:',
   '{',
@@ -26,7 +66,11 @@ export const QUIT_HABIT_SYSTEM = [
   '  "yearsProjection": number,',
   '  "motivation": string,',
   '  "accentColor": "#hex",',
-  '  "milestones": [{ "atHours": number, "label": string, "icon": string }]',
+  '  "milestones": [{ "atHours": number, "label": string, "icon": string }],',
+  '  "atomicHabits": [{',
+  '    "law": 1|2|3|4,',
+  '    "suggestion": string',
+  '  }]',
   '}',
   '',
   'Rules:',
@@ -36,6 +80,9 @@ export const QUIT_HABIT_SYSTEM = [
   '- motivation: one uplifting line (max 18 words) about freedom, energy, or time reclaimed',
   '- accentColor: calm blue-green hex for positive framing (#38bdf8, #34d399, #2dd4bf)',
   '- milestones: 4–5 checkpoints in hours regained (e.g. 24, 168, 720, 4380)',
+  '- atomicHabits: exactly 4 items (laws 1–4), each suggestion is ONE concrete action tailored to THIS habit',
+  '  Law 1 invisible: remove/hide the cue. Law 2 unattractive: reframe costs.',
+  '  Law 3 difficult: add friction. Law 4 unsatisfying: accountability or immediate cost.',
   '- icons from: Clock, Brain, Sun, Sparkles, Heart, Leaf, BookOpen, Footprints',
   '- Parse "2 hours" → 120, "30 min" → 30, "1.5h" → 90',
   '- If user gives a range, use the midpoint',
@@ -103,7 +150,33 @@ export function normalizeQuitHabitModel(parsed) {
       .filter((m) => m.atHours > 0 && m.label)
   }
 
-  return { habitName, dailyMinutes, yearsProjection, motivation, accentColor, milestones }
+  const atomicHabits = normalizeAtomicHabits(parsed, habitName)
+
+  return { habitName, dailyMinutes, yearsProjection, motivation, accentColor, milestones, atomicHabits }
+}
+
+export function normalizeAtomicHabits(parsed, habitName) {
+  const defaults = [
+    `Delete or log out of apps that trigger ${habitName} — remove the cue from your phone home screen.`,
+    `Before each urge, write 3 costs of ${habitName} and one thing you gain by skipping it.`,
+    `Add a 10-minute delay and a physical obstacle (app timer, lock box) before you can start.`,
+    `Tell a friend you'll pay $5 each time you slip — make the reward of quitting immediate.`,
+  ]
+
+  const byLaw = new Map()
+  if (Array.isArray(parsed?.atomicHabits)) {
+    for (const item of parsed.atomicHabits) {
+      const law = Number(item.law)
+      if (law >= 1 && law <= 4 && item.suggestion) {
+        byLaw.set(law, String(item.suggestion).slice(0, 200))
+      }
+    }
+  }
+
+  return ATOMIC_HABITS_META.map((meta, i) => ({
+    ...meta,
+    suggestion: byLaw.get(meta.law) || defaults[i],
+  }))
 }
 
 function formatEquivalentCount(totalMinutes, equivalents = QUIT_EQUIVALENTS) {

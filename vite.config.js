@@ -251,7 +251,7 @@ export default defineConfig(({ mode }) => {
                   { role: 'user', content: habitPrompt.trim() },
                 ],
                 temperature: 0.2,
-                max_completion_tokens: 600,
+                max_completion_tokens: 900,
                 top_p: 1,
                 stream: false,
                 reasoning_effort: 'low',
