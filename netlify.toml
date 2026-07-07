@@ -14,6 +14,11 @@
   status = 200
 
 [[redirects]]
+  from = "/api/habit-sim"
+  to = "/.netlify/functions/habit-sim"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200

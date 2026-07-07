@@ -18,6 +18,7 @@ import NewDayDialog from './components/NewDayDialog'
 import AiChatDialog from './components/AiChatDialog'
 import StreaksPage from './components/StreaksPage'
 import WeightTracker from './components/WeightTracker'
+import HabitSimulator from './components/HabitSimulator'
 import JournalBook from './components/JournalBook'
 import { getIcon } from './icons'
 import { buildWeekStrip, loadDayLog, saveDayLogEntry } from './utils/dayLog'
@@ -205,6 +206,8 @@ export default function App() {
             />
           ) : nav === 'weight' ? (
             <WeightTracker />
+          ) : nav === 'future' ? (
+            <HabitSimulator />
           ) : nav === 'tasks' ? (
             <div className="empty-state">
               <div className="es-icon">

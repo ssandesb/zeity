@@ -7,6 +7,8 @@ import {
   ClipboardList,
   Folder,
   BookOpen,
+  BookMarked,
+  Library,
   Music,
   Moon,
   Sun,
@@ -19,6 +21,13 @@ import {
   Camera,
   Plane,
   GraduationCap,
+  Drumstick,
+  Footprints,
+  Languages,
+  TrendingUp,
+  Target,
+  Flame,
+  Telescope,
 } from 'lucide-react'
 
 const map = {
@@ -29,6 +38,8 @@ const map = {
   Users,
   ClipboardList,
   BookOpen,
+  BookMarked,
+  Library,
   Music,
   Moon,
   Sun,
@@ -41,6 +52,13 @@ const map = {
   Camera,
   Plane,
   GraduationCap,
+  Drumstick,
+  Footprints,
+  Languages,
+  TrendingUp,
+  Target,
+  Flame,
+  Telescope,
 }
 
 // Order shown in the icon picker

@@ -1,9 +1,10 @@
-import { Home, FolderOpen, Scale, ListChecks, Flame, Clock4 } from 'lucide-react'
+import { Home, FolderOpen, Scale, ListChecks, Flame, Clock4, Telescope } from 'lucide-react'
 
 const nav = [
   { id: 'home', label: 'Home', icon: Home },
   { id: 'days', label: 'My Days', icon: FolderOpen },
   { id: 'weight', label: 'Protein Tracker', icon: Scale },
+  { id: 'future', label: 'Future', icon: Telescope },
   { id: 'tasks', label: 'Tasks', icon: ListChecks },
   { id: 'streaks', label: 'Streaks', icon: Flame },
 ]
