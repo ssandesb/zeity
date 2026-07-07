@@ -4612,3 +4612,178 @@ button {
   border-radius: 2px;
   transition: width 0.3s;
 }
+
+/* ── Passt — Quit habit impact ── */
+.qhab {
+  margin-top: 8px;
+}
+
+.qhab-head {
+  margin-bottom: 20px;
+}
+
+.qhab-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: var(--text);
+}
+
+.qhab-sub {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.qhab-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 720px) {
+  .qhab-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.qhab-panel {
+  border-radius: var(--radius-lg);
+  padding: 20px 18px;
+  border: 1px solid var(--line);
+  transition: border-color 0.35s, box-shadow 0.35s, transform 0.35s;
+}
+
+.qhab-panel--before {
+  background: linear-gradient(165deg, #1e1e24 0%, #252530 100%);
+  color: #a1a1aa;
+  border-color: #3f3f46;
+}
+
+.qhab-panel--after {
+  background: linear-gradient(165deg, #0c1929 0%, #0f2a1f 55%, #0d2818 100%);
+  color: #a7f3d0;
+  border-color: #134e4a;
+  box-shadow: 0 8px 32px rgba(52, 211, 153, 0.08);
+}
+
+.qhab-panel-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #71717a;
+  margin-bottom: 14px;
+}
+
+.qhab-panel-tag--after {
+  color: #6ee7b7;
+}
+
+.qhab-svg {
+  width: 100%;
+  max-width: 160px;
+  height: auto;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.qhab-svg--before {
+  color: #52525b;
+}
+
+.qhab-svg-fill--drain {
+  fill: #52525b;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.qhab-wave {
+  animation: qhab-wave-pulse 2.4s ease-in-out infinite;
+}
+
+.qhab-wave--delay {
+  animation-delay: 0.4s;
+}
+
+.qhab-sun-dot {
+  animation: qhab-sun-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes qhab-wave-pulse {
+  0%, 100% { opacity: 0.75; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-2px); }
+}
+
+@keyframes qhab-sun-glow {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
+}
+
+.qhab-stat {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.qhab-stat--compact {
+  margin-top: 12px;
+}
+
+.qhab-stat-icon {
+  margin-top: 4px;
+  flex-shrink: 0;
+  color: #71717a;
+}
+
+.qhab-stat-icon--after {
+  color: #38bdf8;
+}
+
+.qhab-stat-value {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #d4d4d8;
+}
+
+.qhab-stat-value--gain {
+  color: #6ee7b7;
+}
+
+.qhab-stat-value--transition {
+  transition: color 0.4s, transform 0.4s;
+}
+
+.qhab-stat-unit {
+  font-size: 13px;
+  font-weight: 500;
+  color: inherit;
+  opacity: 0.85;
+}
+
+.qhab-detail {
+  margin: 0 0 4px;
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+.qhab-detail--after {
+  color: #99f6e4;
+}
+
+.qhab-note {
+  margin: 14px 0 0;
+  font-size: 13px;
+  line-height: 1.45;
+  opacity: 0.8;
+}
+
+.qhab-note--after {
+  color: #a7f3d0;
+}
