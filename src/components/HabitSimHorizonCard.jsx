@@ -20,7 +20,7 @@ function Sparkline({ series, color }) {
 }
 
 export default function HabitSimHorizonCard({ horizon, unit, color, selected, onClick }) {
-  const Icon = getIcon(horizon.icon || 'TrendingUp')
+  const Icon = getIcon('Target')
 
   return (
     <button
@@ -31,18 +31,21 @@ export default function HabitSimHorizonCard({ horizon, unit, color, selected, on
     >
       <div className="hsim-hc-top">
         <span className="hsim-hc-label">{horizon.label}</span>
-        {horizon.gapPct > 0 && (
-          <span className="hsim-hc-gap">−{horizon.gapPct}%</span>
-        )}
+        {horizon.gapPct > 0 && <span className="hsim-hc-gap">−{horizon.gapPct}%</span>}
       </div>
       <div className="hsim-hc-value">
-        {formatTotal(horizon.total, unit)}
+        {formatTotal(horizon.total)}
         <span className="hsim-hc-unit">{unit}</span>
       </div>
-      {horizon.equivalent && (
+      {(horizon.insight?.line || horizon.equivalent) && (
         <div className="hsim-hc-equiv">
           <Icon size={14} strokeWidth={2.2} />
-          {horizon.equivalent}
+          {horizon.insight?.line || horizon.equivalent}
+        </div>
+      )}
+      {horizon.bodyProgress > 0 && (
+        <div className="hsim-hc-body-bar">
+          <div className="hsim-hc-body-fill" style={{ width: `${horizon.bodyProgress}%` }} />
         </div>
       )}
       <Sparkline series={horizon.series} color={color} />

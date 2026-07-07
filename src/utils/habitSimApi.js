@@ -1,8 +1,8 @@
-export async function fetchHabitModel(habitPrompt, signal) {
+export async function fetchHabitModel(habitPrompt, profile = null, signal) {
   const res = await fetch('/api/habit-sim', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ habitPrompt }),
+    body: JSON.stringify({ habitPrompt, profile }),
     signal,
   })
 

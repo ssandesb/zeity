@@ -33,6 +33,8 @@ export async function handler(event) {
     }
 
     const habitPrompt = parsed.habitPrompt
+    const profile = parsed.profile && typeof parsed.profile === 'object' ? parsed.profile : null
+
     if (!habitPrompt || typeof habitPrompt !== 'string') {
       return cors(
         {
@@ -56,15 +58,19 @@ export async function handler(event) {
       )
     }
 
+    const userContent = profile
+      ? `${habitPrompt.trim()}\n\nUser profile for personalization: ${JSON.stringify(profile)}`
+      : habitPrompt.trim()
+
     const groq = new Groq({ apiKey: groqApiKey })
     const completion = await groq.chat.completions.create({
       model: 'openai/gpt-oss-120b',
       messages: [
         { role: 'system', content: HABIT_SIM_SYSTEM },
-        { role: 'user', content: habitPrompt.trim() },
+        { role: 'user', content: userContent },
       ],
       temperature: 0.2,
-      max_completion_tokens: 800,
+      max_completion_tokens: 1200,
       top_p: 1,
       stream: false,
       reasoning_effort: 'low',

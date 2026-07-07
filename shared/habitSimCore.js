@@ -20,32 +20,60 @@ export const HABIT_SIM_ICONS = [
 ]
 
 export const HABIT_SIM_SYSTEM = [
-  'You parse habit descriptions into measurable simulation models for a projection app.',
-  'Return ONLY valid JSON (no markdown fences, no extra text).',
+  'You are Zeity Future — parse habits into GOAL-FOCUSED simulation models.',
+  'Identify what the user actually wants to achieve, not just the activity.',
+  'Return ONLY valid JSON (no markdown fences).',
+  '',
+  'Examples of goal identification:',
+  '- "10k steps" → goalType "calories", visualization "flame", metric in kcal (needs weight to compute)',
+  '- "abs workout 20 min" → goalType "body_composition", visualization "body", ask weight_kg, target belly/core',
+  '- "read 25 pages" → goalType "knowledge", visualization "books"',
+  '- "100g protein" → goalType "fitness", visualization "ring", metric protein grams',
+  '- "learn German" → goalType "skill", visualization "ring", growth skill with cap',
   '',
   'Schema:',
   '{',
   '  "title": string,',
   '  "subtitle": string,',
   '  "icon": string,',
+  '  "goalType": "calories" | "body_composition" | "knowledge" | "skill" | "fitness" | "generic",',
+  '  "visualization": "flame" | "body" | "books" | "ring" | "steps" | "chart",',
+  '  "accentColor": "#hex",',
   '  "metric": { "name": string, "unit": string, "daily": number },',
   '  "growth": { "type": "linear" | "compound" | "skill", "dailyRate": number, "cap": number | null },',
+  '  "compute": {',
+  '    "method": "direct" | "steps_calories" | "workout_body" | "walking_calories",',
+  '    "stepsDaily": number | null,',
+  '    "minutesDaily": number | null,',
+  '    "met": number | null,',
+  '    "focusArea": "core" | "full" | null',
+  '  },',
+  '  "profileQuestions": [{',
+  '    "id": string,',
+  '    "label": string,',
+  '    "unit": string,',
+  '    "type": "number",',
+  '    "default": number,',
+  '    "required": boolean,',
+  '    "min": number,',
+  '    "max": number',
+  '  }],',
   '  "equivalents": [{ "threshold": number, "label": string, "plural": string }],',
   '  "milestones": [{ "at": number, "label": string, "icon": string }],',
+  '  "motivation": string,',
   '  "compoundNote": string',
   '}',
   '',
   'Rules:',
-  '- metric.daily: numeric amount per habit day (e.g. 25 pages, 100 grams, 10000 steps, 1 topic).',
-  '- growth.type "linear": same output each day (reading pages, protein, steps).',
-  '- growth.type "compound": daily output grows by dailyRate each day (e.g. 0.01 = 1% more per day). Use for skill/speed improvements.',
-  '- growth.type "skill": cumulative count capped at growth.cap (e.g. 365 grammar topics, cap 400). dailyRate unused.',
-  '- equivalents: convert totals to friendly units (250 pages = 1 book, 10000 steps ≈ 8 km if relevant).',
-  '- milestones: 3-5 visual checkpoints with Lucide icon names.',
-  `- icon and milestone icons must be one of: ${HABIT_SIM_ICONS.join(', ')}`,
-  '- compoundNote: max 12 words, motivational not medical.',
-  '- Infer reasonable daily numbers when user gives duration (1 hr reading ≈ 25-40 pages).',
-  '- For protein/health habits use linear growth only; no medical claims.',
+  '- profileQuestions: include weight_kg (required) for steps, walking, abs, cardio, fat-loss goals.',
+  '- For body_composition / abs / belly: compute.method = "workout_body", minutesDaily from habit, met 4-6.',
+  '- For steps: compute.method = "steps_calories", stepsDaily = parsed steps (default 10000).',
+  '- equivalents: calories → threshold 500 "meal", steps → 10000 "marathon day" fraction, pages → 250 books.',
+  '- milestones: 4-5 checkpoints on the PRIMARY metric (kcal, pages, etc.).',
+  '- motivation: one punchy line (max 15 words) about what consistency unlocks.',
+  '- accentColor: hex matching goal (orange flame, green fitness, purple knowledge).',
+  `- icons from: ${HABIT_SIM_ICONS.join(', ')}`,
+  '- No medical guarantees; frame body results as "estimated" and motivational.',
 ].join('\n')
 
 export function tryParseHabitSimJson(raw) {
@@ -71,10 +99,16 @@ const DEFAULT_MODEL = {
   title: 'Habit',
   subtitle: 'Daily progress',
   icon: 'TrendingUp',
+  goalType: 'generic',
+  visualization: 'chart',
+  accentColor: '#6366f1',
   metric: { name: 'Progress', unit: 'units', daily: 1 },
   growth: { type: 'linear', dailyRate: 0, cap: null },
+  compute: { method: 'direct', stepsDaily: null, minutesDaily: null, met: null, focusArea: null },
+  profileQuestions: [],
   equivalents: [],
   milestones: [],
+  motivation: 'Small daily wins compound into big results.',
   compoundNote: '',
 }
 
@@ -87,6 +121,9 @@ export function normalizeHabitModel(parsed) {
 
   const daily = Number(parsed.metric?.daily)
   const icon = HABIT_SIM_ICONS.includes(parsed.icon) ? parsed.icon : 'TrendingUp'
+
+  const goalTypes = ['calories', 'body_composition', 'knowledge', 'skill', 'fitness', 'generic']
+  const vizTypes = ['flame', 'body', 'books', 'ring', 'steps', 'chart']
 
   const equivalents = (Array.isArray(parsed.equivalents) ? parsed.equivalents : [])
     .filter((e) => Number(e?.threshold) > 0)
@@ -105,10 +142,29 @@ export function normalizeHabitModel(parsed) {
     }))
     .sort((a, b) => a.at - b.at)
 
+  const profileQuestions = (Array.isArray(parsed.profileQuestions) ? parsed.profileQuestions : [])
+    .filter((q) => q?.id)
+    .map((q) => ({
+      id: String(q.id),
+      label: String(q.label || q.id),
+      unit: String(q.unit || ''),
+      type: 'number',
+      default: Number(q.default) || 70,
+      required: Boolean(q.required),
+      min: Number(q.min) || 1,
+      max: Number(q.max) || 300,
+    }))
+
+  const compute = parsed.compute || {}
+  const methods = ['direct', 'steps_calories', 'workout_body', 'walking_calories']
+
   return {
     title: String(parsed.title || DEFAULT_MODEL.title).slice(0, 60),
-    subtitle: String(parsed.subtitle || DEFAULT_MODEL.subtitle).slice(0, 80),
+    subtitle: String(parsed.subtitle || DEFAULT_MODEL.subtitle).slice(0, 100),
     icon,
+    goalType: goalTypes.includes(parsed.goalType) ? parsed.goalType : 'generic',
+    visualization: vizTypes.includes(parsed.visualization) ? parsed.visualization : 'chart',
+    accentColor: /^#[0-9a-fA-F]{6}$/.test(parsed.accentColor) ? parsed.accentColor : '#6366f1',
     metric: {
       name: String(parsed.metric?.name || 'Progress').slice(0, 40),
       unit: String(parsed.metric?.unit || 'units').slice(0, 20),
@@ -119,10 +175,36 @@ export function normalizeHabitModel(parsed) {
       dailyRate: Number(parsed.growth?.dailyRate) || 0.01,
       cap: growthType === 'skill' && Number(parsed.growth?.cap) > 0 ? Number(parsed.growth.cap) : null,
     },
+    compute: {
+      method: methods.includes(compute.method) ? compute.method : 'direct',
+      stepsDaily: Number(compute.stepsDaily) || null,
+      minutesDaily: Number(compute.minutesDaily) || null,
+      met: Number(compute.met) || null,
+      focusArea: compute.focusArea || null,
+    },
+    profileQuestions,
     equivalents,
     milestones,
-    compoundNote: String(parsed.compoundNote || '').slice(0, 80),
+    motivation: String(parsed.motivation || DEFAULT_MODEL.motivation).slice(0, 120),
+    compoundNote: String(parsed.compoundNote || '').slice(0, 100),
   }
+}
+
+export function defaultProfile(model) {
+  const profile = {}
+  for (const q of model.profileQuestions || []) {
+    profile[q.id] = q.default
+  }
+  return profile
+}
+
+export function profileComplete(model, profile) {
+  for (const q of model.profileQuestions || []) {
+    if (!q.required) continue
+    const v = Number(profile[q.id])
+    if (!Number.isFinite(v) || v < q.min || v > q.max) return false
+  }
+  return true
 }
 
 export function formatEquivalent(total, equivalents) {
@@ -130,7 +212,7 @@ export function formatEquivalent(total, equivalents) {
   const eq = equivalents[0]
   const count = total / eq.threshold
   if (count < 0.1) return null
-  const rounded = count >= 10 ? Math.round(count) : +(count).toFixed(1)
+  const rounded = count >= 10 ? Math.round(count) : +count.toFixed(1)
   const word = rounded === 1 ? eq.label : eq.plural
   return `${rounded} ${word}`
 }
