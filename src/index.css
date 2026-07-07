@@ -5119,3 +5119,415 @@ button {
 .ahq-panel--build .ahq-law-num {
   background: var(--hsim-accent, var(--ahq-accent));
 }
+
+/* ── Deutsch B1 practice ── */
+.deu-page {
+  max-width: 720px;
+}
+
+.deu-collapse {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.deu-collapse-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 16px;
+  text-align: left;
+  font: inherit;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--surface-2);
+  border: none;
+  cursor: pointer;
+}
+
+.deu-collapse-head svg:first-child {
+  color: #58cc02;
+  flex-shrink: 0;
+}
+
+.deu-collapse-title {
+  flex: 1;
+}
+
+.deu-collapse-badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: rgba(88, 204, 2, 0.15);
+  color: #58cc02;
+}
+
+.deu-collapse-chevron {
+  color: var(--muted);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.deu-collapse.open .deu-collapse-chevron {
+  transform: rotate(180deg);
+}
+
+.deu-collapse-body {
+  padding: 12px 14px 14px;
+}
+
+.deu-progress-bar {
+  height: 10px;
+  border-radius: 20px;
+  background: var(--surface-3);
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.deu-progress-fill {
+  height: 100%;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #58cc02, #89e219);
+  transition: width 0.4s ease;
+}
+
+.deu-progress-label {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.deu-path {
+  margin-top: 8px;
+}
+
+.deu-topics {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.deu-topic-wrap {
+  animation: deu-fade 0.35s ease both;
+  animation-delay: calc(var(--deu-i) * 0.03s);
+}
+
+@keyframes deu-fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.deu-topic {
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  padding: 12px 14px;
+  background: var(--surface-2);
+}
+
+.deu-topic-head {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.deu-topic-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 3px solid var(--line-strong);
+  margin-top: 4px;
+  flex-shrink: 0;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.deu-topic-dot.done {
+  border-color: #58cc02;
+  background: #58cc02;
+}
+
+.deu-topic-info h4 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.deu-topic-info p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.45;
+}
+
+.deu-topic .deu-collapse {
+  margin-bottom: 0;
+  border: none;
+  background: transparent;
+}
+
+.deu-topic .deu-collapse-head {
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  background: color-mix(in srgb, #58cc02 8%, var(--surface));
+}
+
+.deu-ai-modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.deu-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 2px solid var(--line);
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.deu-mode-btn:hover:not(:disabled) {
+  border-color: #58cc02;
+  background: rgba(88, 204, 2, 0.08);
+}
+
+.deu-mode-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.deu-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-2);
+  padding: 12px 0;
+}
+
+.deu-error {
+  color: #ef4444;
+  font-size: 13px;
+  margin: 0 0 10px;
+}
+
+.deu-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.deu-btn--ghost {
+  margin-top: 10px;
+  background: var(--surface-3);
+  color: var(--text-2);
+}
+
+.deu-btn--hit {
+  background: #58cc02;
+  color: #fff;
+}
+
+.deu-btn--miss {
+  background: var(--surface-3);
+  color: var(--text-2);
+  border: 1px solid var(--line);
+}
+
+.deu-flash {
+  text-align: center;
+}
+
+.deu-flash-meta,
+.deu-quiz-meta {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.deu-flash-card {
+  width: 100%;
+  min-height: 140px;
+  border-radius: 16px;
+  border: 2px solid #58cc02;
+  background: var(--surface);
+  padding: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.deu-flash-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 8px 24px rgba(88, 204, 2, 0.12);
+}
+
+.deu-flash-front small {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.deu-flash-back {
+  display: none;
+  color: #58cc02;
+}
+
+.deu-flash-card.flipped .deu-flash-front {
+  display: none;
+}
+
+.deu-flash-card.flipped .deu-flash-back {
+  display: block;
+}
+
+.deu-flash-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.deu-quiz-q {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 12px;
+  line-height: 1.45;
+}
+
+.deu-quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.deu-quiz-opt {
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 2px solid var(--line);
+  background: var(--surface);
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.deu-quiz-opt:hover:not(:disabled) {
+  border-color: #58cc02;
+}
+
+.deu-quiz-opt.correct {
+  border-color: #58cc02;
+  background: rgba(88, 204, 2, 0.15);
+}
+
+.deu-quiz-opt.wrong {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.deu-quiz-opt:disabled {
+  cursor: default;
+}
+
+.deu-quiz-expl {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.45;
+}
+
+.deu-lesson-summary {
+  margin: 0 0 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+.deu-lesson-section {
+  margin-bottom: 14px;
+}
+
+.deu-lesson-section h4 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #58cc02;
+}
+
+.deu-lesson-section p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.deu-example {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  border-left: 3px solid #58cc02;
+  border-radius: 0 8px 8px 0;
+  background: rgba(88, 204, 2, 0.08);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text);
+}
+
+.deu-lesson-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--surface-3);
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+@media (max-width: 520px) {
+  .deu-ai-modes {
+    flex-direction: column;
+  }
+
+  .deu-mode-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .deu-flash-actions {
+    flex-direction: column;
+  }
+
+  .deu-btn--hit,
+  .deu-btn--miss {
+    width: 100%;
+    justify-content: center;
+  }
+}

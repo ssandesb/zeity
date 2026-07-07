@@ -1,0 +1,199 @@
+{
+  "title": "Deutsche Grammatikthemen B1",
+  "sourceSpreadsheetId": "1fUxkyG-KOg7g9SA3UAVsvCkPCZ0qic-A7pzQph8hVC8",
+  "categories": [
+    {
+      "id": "satzbau",
+      "name": "Satzbau & Nebensätze",
+      "emoji": "🧩",
+      "topics": [
+        {
+          "id": "hauptsatz",
+          "title": "Hauptsatz",
+          "details": "Wortstellung S – V – O, Position des Verbs (2. Stelle)"
+        },
+        {
+          "id": "fragesaetze",
+          "title": "Fragesätze",
+          "details": "Entscheidungsfragen (Ja/Nein), W-Fragen"
+        },
+        {
+          "id": "nebensaetze-konjunktionen",
+          "title": "Nebensätze mit Konjunktionen",
+          "details": "weil, dass, wenn, als, obwohl, ob, damit, während, bevor, nachdem"
+        },
+        {
+          "id": "relativsaetze",
+          "title": "Relativsätze",
+          "details": "mit der/die/das, welcher/welche/welches, im Nominativ, Akkusativ, Dativ, Genitiv"
+        },
+        {
+          "id": "infinitivsaetze-zu",
+          "title": "Infinitivsätze mit „zu“",
+          "details": "um…zu, ohne…zu, statt…zu + einfacher Infinitiv"
+        },
+        {
+          "id": "satzklammer",
+          "title": "Satzklammer",
+          "details": "Verbteile am Satzanfang/-ende (trennbare Verben, Modalverb + Infinitiv, Perfektformen)"
+        },
+        {
+          "id": "wortstellung-zwei-verben",
+          "title": "Wortstellung bei zwei Verben",
+          "details": "Modalverb + Infinitiv, Perfekt/Plusquamperfekt (Partizip II + haben/sein)"
+        }
+      ]
+    },
+    {
+      "id": "verben",
+      "name": "Verben & Zeiten",
+      "emoji": "⏱️",
+      "topics": [
+        {
+          "id": "praesens",
+          "title": "Präsens",
+          "details": "regelmäßige/unregelmäßige Verben, trennbare Verben"
+        },
+        {
+          "id": "praeteritum",
+          "title": "Präteritum",
+          "details": "vor allem sein, haben, Modalverben (konnte, musste, wollte, sollte, durfte), einfache Erzählformen"
+        },
+        {
+          "id": "perfekt",
+          "title": "Perfekt",
+          "details": "Bildung mit haben/sein, Partizip II, trennbare und untrennbare Verben"
+        },
+        {
+          "id": "plusquamperfekt",
+          "title": "Plusquamperfekt",
+          "details": "hatte/war + Partizip II (Grundverständnis)"
+        },
+        {
+          "id": "futur-i",
+          "title": "Futur I",
+          "details": "werden + Infinitiv (Pläne, Vermutungen)"
+        },
+        {
+          "id": "modalverben",
+          "title": "Modalverben",
+          "details": "können, müssen, dürfen, sollen, wollen, mögen – in Präsens und Präteritum"
+        },
+        {
+          "id": "trennbar-untrennbar",
+          "title": "Trennbare / untrennbare Verben",
+          "details": "Betonung, Position des Präfixes"
+        },
+        {
+          "id": "reflexive-verben",
+          "title": "Reflexive Verben",
+          "details": "mit Akkusativ/Dativ (sich freuen, sich erinnern, sich vorstellen, sich etwas merken)"
+        },
+        {
+          "id": "passiv-praesens",
+          "title": "Passiv Präsens",
+          "details": "werden + Partizip II (Die Tür wird geöffnet.)"
+        },
+        {
+          "id": "passiv-perfekt",
+          "title": "Passiv Perfekt / Vorgangspassiv",
+          "details": "ist/war + Partizip II (Grundmuster)"
+        },
+        {
+          "id": "zustandspassiv",
+          "title": "Zustandspassiv",
+          "details": "sein + Partizip II, z.B. Die Tür ist geöffnet. – Grundunterscheidung"
+        },
+        {
+          "id": "konjunktiv-ii",
+          "title": "Konjunktiv II",
+          "details": "höfliche Formen (ich hätte gern, ich würde gern, könnten Sie…), irreale Wünsche (Wenn ich mehr Zeit hätte…)"
+        }
+      ]
+    },
+    {
+      "id": "nomen",
+      "name": "Nomen",
+      "emoji": "📚",
+      "topics": [
+        {
+          "id": "artikel-bestimmt-unbestimmt",
+          "title": "Bestimmter/Unbestimmter Artikel",
+          "details": "der/die/das, ein/eine – im Singular/Plural"
+        },
+        {
+          "id": "deklination-nomen-artikel",
+          "title": "Deklination der Nomen und Artikel",
+          "details": "Deklination in allen vier Fällen (Nominativ, Akkusativ, Dativ, Genitiv)"
+        },
+        {
+          "id": "genitiv",
+          "title": "Genitiv",
+          "details": "Formen (des Mannes, der Frau, des Kindes), Genitiv-s, Apostroph-Regeln im Deutschen"
+        },
+        {
+          "id": "genitivpraepositionen",
+          "title": "Genitivpräpositionen",
+          "details": "trotz, während, wegen, innerhalb, außerhalb, statt, anstatt"
+        },
+        {
+          "id": "n-deklination",
+          "title": "N-Deklination",
+          "details": "der Student – des Studenten, der Mensch – des Menschen usw."
+        },
+        {
+          "id": "pluralbildung",
+          "title": "Pluralbildung",
+          "details": "häufige Pluralendungen und Umlaut (das Buch – die Bücher, der Tag – die Tage)"
+        },
+        {
+          "id": "possessivartikel",
+          "title": "Possessivartikel",
+          "details": "mein, dein, sein, ihr, unser, euer, ihr – in allen Fällen"
+        }
+      ]
+    },
+    {
+      "id": "praepositionen",
+      "name": "Präpositionen & Verben mit Präposition",
+      "emoji": "📍",
+      "topics": [
+        {
+          "id": "wechselpraepositionen",
+          "title": "Wechselpräpositionen",
+          "details": "(Akkusativ/Dativ): in, an, auf, über, unter, vor, hinter, neben, zwischen – Richtungsfrage „wohin?“ vs. Ortsfrage „wo?“"
+        },
+        {
+          "id": "akkusativpraepositionen",
+          "title": "Feste Akkusativpräpositionen",
+          "details": "für, durch, gegen, ohne, um, entlang"
+        },
+        {
+          "id": "dativpraepositionen",
+          "title": "Feste Dativpräpositionen",
+          "details": "mit, nach, bei, seit, von, zu, aus, gegenüber"
+        },
+        {
+          "id": "lokale-praepositionen",
+          "title": "Lokale Präpositionen",
+          "details": "nach, in, zu, aus, von, bei (Unterschiede: Ich fahre nach/in/zu…)"
+        },
+        {
+          "id": "temporale-praepositionen",
+          "title": "Temporale Präpositionen",
+          "details": "seit, ab, bis, von…bis, vor, nach, in (z.B. seit einem Jahr, vor zwei Wochen)"
+        },
+        {
+          "id": "kausale-praepositionen",
+          "title": "Kausale Präpositionen",
+          "details": "wegen, aufgrund, dank"
+        },
+        {
+          "id": "verben-mit-praeposition",
+          "title": "Verben mit fester Präposition",
+          "details": "warten auf + Akk., denken an + Akk., sich freuen auf/über + Akk., sprechen über/mit, sich interessieren für + Akk., teilnehmen an + Dat., fragen nach + Dat., sich kümmern um + Akk., sich beschäftigen mit + Dat., abhängen von + Dat."
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import { Home, FolderOpen, Scale, ListChecks, Flame, Clock4, Telescope, LayoutGrid } from 'lucide-react'
+import { Home, FolderOpen, Scale, ListChecks, Flame, Clock4, Telescope, LayoutGrid, Languages } from 'lucide-react'
 
 const nav = [
   { id: 'home', label: 'Home', icon: Home },
@@ -6,6 +6,7 @@ const nav = [
   { id: 'weight', label: 'Protein Tracker', icon: Scale },
   { id: 'future', label: 'Future', icon: Telescope },
   { id: 'passt', label: 'Passt', icon: LayoutGrid, sub: true },
+  { id: 'deutsch', label: 'Deutsch', icon: Languages },
   { id: 'tasks', label: 'Tasks', icon: ListChecks },
   { id: 'streaks', label: 'Streaks', icon: Flame },
 ]

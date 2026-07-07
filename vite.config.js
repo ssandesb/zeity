@@ -16,6 +16,12 @@ import {
   normalizeQuitHabitModel,
   tryParseQuitHabitJson,
 } from './shared/quitHabitCore.js'
+import {
+  DEUTSCH_LEARN_SYSTEM,
+  buildDeutschUserPrompt,
+  normalizeDeutschContent,
+  tryParseDeutschJson,
+} from './shared/deutschLearnCore.js'
 
 function readJsonBody(req) {
   return new Promise((resolve, reject) => {
@@ -268,6 +274,75 @@ export default defineConfig(({ mode }) => {
               res.statusCode = 500
               res.setHeader('Content-Type', 'application/json')
               res.end(JSON.stringify({ error: 'Quit habit parse failed', details: String(e?.message || e) }))
+            }
+          })
+
+          server.middlewares.use('/api/deutsch-learn', async (req, res) => {
+            corsHeaders(req, res)
+
+            if (req.method === 'OPTIONS') {
+              res.statusCode = 204
+              res.end()
+              return
+            }
+
+            if (req.method !== 'POST') {
+              res.statusCode = 405
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify({ error: 'Method Not Allowed' }))
+              return
+            }
+
+            if (!groqApiKey) {
+              res.statusCode = 500
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify({ error: 'Missing Groq API key in .env (GROQ_API_KEY or groq)' }))
+              return
+            }
+
+            try {
+              const parsed = await readJsonBody(req)
+              const { mode, topic, categoryName } = parsed
+
+              if (!mode || !topic?.title) {
+                res.statusCode = 400
+                res.setHeader('Content-Type', 'application/json')
+                res.end(JSON.stringify({ error: 'Missing mode or topic' }))
+                return
+              }
+
+              const groq = new Groq({ apiKey: groqApiKey })
+              const completion = await groq.chat.completions.create({
+                model: 'openai/gpt-oss-120b',
+                messages: [
+                  { role: 'system', content: DEUTSCH_LEARN_SYSTEM },
+                  { role: 'user', content: buildDeutschUserPrompt(mode, topic, categoryName || '') },
+                ],
+                temperature: 0.35,
+                max_completion_tokens: 1800,
+                top_p: 1,
+                stream: false,
+                reasoning_effort: 'low',
+              })
+
+              const raw = completion?.choices?.[0]?.message?.content ?? ''
+              const structured = tryParseDeutschJson(raw)
+              const content = normalizeDeutschContent(structured, mode)
+
+              if (!content) {
+                res.statusCode = 500
+                res.setHeader('Content-Type', 'application/json')
+                res.end(JSON.stringify({ error: 'Failed to parse AI response', raw }))
+                return
+              }
+
+              res.statusCode = 200
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify({ content, raw }))
+            } catch (e) {
+              res.statusCode = 500
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify({ error: 'Deutsch learn failed', details: String(e?.message || e) }))
             }
           })
         },

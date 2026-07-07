@@ -20,6 +20,7 @@ import StreaksPage from './components/StreaksPage'
 import WeightTracker from './components/WeightTracker'
 import HabitSimulator from './components/HabitSimulator'
 import PasstPage from './components/PasstPage'
+import DeutschPage from './components/DeutschPage'
 import JournalBook from './components/JournalBook'
 import { getIcon } from './icons'
 import { buildWeekStrip, loadDayLog, saveDayLogEntry } from './utils/dayLog'
@@ -211,6 +212,8 @@ export default function App() {
             <HabitSimulator />
           ) : nav === 'passt' ? (
             <PasstPage />
+          ) : nav === 'deutsch' ? (
+            <DeutschPage />
           ) : nav === 'tasks' ? (
             <div className="empty-state">
               <div className="es-icon">
