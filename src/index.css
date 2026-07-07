@@ -5111,3 +5111,11 @@ button {
 .ahq-quadrant:hover .ahq-rock {
   transform: scale(calc(var(--ahq-rock-scale, 1) * 1.08));
 }
+
+.ahq-panel--build .ahq-quadrant--build {
+  border-color: color-mix(in srgb, var(--ahq-accent) 12%, var(--line));
+}
+
+.ahq-panel--build .ahq-law-num {
+  background: var(--hsim-accent, var(--ahq-accent));
+}

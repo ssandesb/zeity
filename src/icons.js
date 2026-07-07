@@ -32,6 +32,8 @@ import {
   Ban,
   Lock,
   CircleSlash,
+  Eye,
+  Zap,
 } from 'lucide-react'
 
 const map = {
@@ -67,6 +69,8 @@ const map = {
   Ban,
   Lock,
   CircleSlash,
+  Eye,
+  Zap,
 }
 
 // Order shown in the icon picker

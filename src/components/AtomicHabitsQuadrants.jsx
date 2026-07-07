@@ -49,18 +49,48 @@ function StackedRocks({ quadrants, accent }) {
   )
 }
 
-export default function AtomicHabitsQuadrants({ quadrants, habitName, accent = '#34d399' }) {
+const COPY = {
+  build: {
+    title: 'Atomic Habits · 4 laws to start & stick',
+    subtitle: (name) => (
+      <>
+        James Clear&apos;s loop — <strong>Cue → Craving → Response → Reward</strong> — tuned to build{' '}
+        <em>{name}</em>.
+      </>
+    ),
+    footnote: 'Stack all four rocks — obvious, attractive, easy, satisfying — and the habit sticks.',
+    suggestionLabel: 'Start here',
+  },
+  break: {
+    title: 'Atomic Habits · 4 laws inverted',
+    subtitle: (name) => (
+      <>
+        James Clear&apos;s habit loop — <strong>Cue → Craving → Response → Reward</strong> — flipped to
+        break <em>{name}</em>.
+      </>
+    ),
+    footnote: 'Each rock is one lever — stack all four and the habit loop loses its grip.',
+    suggestionLabel: 'Your move',
+  },
+}
+
+export default function AtomicHabitsQuadrants({
+  quadrants,
+  habitName,
+  accent = '#34d399',
+  mode = 'break',
+}) {
   if (!quadrants?.length) return null
 
+  const copy = COPY[mode] || COPY.break
+  const isBuild = mode === 'build'
+
   return (
-    <section className="panel ahq-panel">
+    <section className={`panel ahq-panel ${isBuild ? 'ahq-panel--build' : ''}`}>
       <header className="ahq-head">
         <div>
-          <h3>Atomic Habits · 4 laws inverted</h3>
-          <p>
-            James Clear&apos;s habit loop — <strong>Cue → Craving → Response → Reward</strong> — flipped
-            to break <em>{habitName}</em>.
-          </p>
+          <h3>{copy.title}</h3>
+          <p>{copy.subtitle(habitName)}</p>
         </div>
         <StackedRocks quadrants={quadrants} accent={accent} />
       </header>
@@ -68,10 +98,11 @@ export default function AtomicHabitsQuadrants({ quadrants, habitName, accent = '
       <div className="ahq-grid">
         {quadrants.map((q, i) => {
           const Icon = getIcon(q.icon)
+          const headline = isBuild ? q.buildLaw : q.breakLaw
           return (
             <article
               key={q.law}
-              className={`ahq-quadrant ahq-quadrant--${q.law}`}
+              className={`ahq-quadrant ahq-quadrant--${q.law} ${isBuild ? 'ahq-quadrant--build' : ''}`}
               style={{ '--ahq-accent': accent, '--ahq-i': i }}
             >
               <div className="ahq-quadrant-top">
@@ -81,14 +112,16 @@ export default function AtomicHabitsQuadrants({ quadrants, habitName, accent = '
                 </div>
                 <div className="ahq-quadrant-meta">
                   <span className="ahq-loop-step">{q.loopStep}</span>
-                  <h4>{q.breakLaw}</h4>
-                  <span className="ahq-build-ref">Build: {q.buildLaw}</span>
+                  <h4>{headline}</h4>
+                  {!isBuild && q.buildLaw && (
+                    <span className="ahq-build-ref">Build: {q.buildLaw}</span>
+                  )}
                 </div>
                 <Icon size={20} strokeWidth={2.2} className="ahq-quadrant-icon" />
               </div>
               <p className="ahq-framework">{q.framework}</p>
               <div className="ahq-suggestion">
-                <strong>Your move</strong>
+                <strong>{copy.suggestionLabel}</strong>
                 <p>{q.suggestion}</p>
               </div>
             </article>
@@ -96,9 +129,7 @@ export default function AtomicHabitsQuadrants({ quadrants, habitName, accent = '
         })}
       </div>
 
-      <p className="ahq-footnote">
-        Each rock is one lever — stack all four and the habit loop loses its grip.
-      </p>
+      <p className="ahq-footnote">{copy.footnote}</p>
     </section>
   )
 }

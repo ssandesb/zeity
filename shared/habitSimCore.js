@@ -61,7 +61,8 @@ export const HABIT_SIM_SYSTEM = [
   '  "equivalents": [{ "threshold": number, "label": string, "plural": string }],',
   '  "milestones": [{ "at": number, "label": string, "icon": string }],',
   '  "motivation": string,',
-  '  "compoundNote": string',
+  '  "compoundNote": string,',
+  '  "atomicHabits": [{ "law": 1|2|3|4, "suggestion": string }]',
   '}',
   '',
   'Rules:',
@@ -71,6 +72,9 @@ export const HABIT_SIM_SYSTEM = [
   '- equivalents: calories → threshold 500 "meal", steps → 10000 "marathon day" fraction, pages → 250 books.',
   '- milestones: 4-5 checkpoints on the PRIMARY metric (kcal, pages, etc.).',
   '- motivation: one punchy line (max 15 words) about what consistency unlocks.',
+  '- atomicHabits: exactly 4 items (laws 1–4), each suggestion is ONE concrete action to START and CONTINUE this habit.',
+  '  Law 1 obvious: design a clear cue. Law 2 attractive: pair with something enjoyable.',
+  '  Law 3 easy: two-minute version or reduce friction. Law 4 satisfying: immediate reward or tracker.',
   '- accentColor: hex matching goal (orange flame, green fitness, purple knowledge).',
   `- icons from: ${HABIT_SIM_ICONS.join(', ')}`,
   '- No medical guarantees; frame body results as "estimated" and motivational.',
@@ -110,6 +114,65 @@ const DEFAULT_MODEL = {
   milestones: [],
   motivation: 'Small daily wins compound into big results.',
   compoundNote: '',
+}
+
+export const ATOMIC_HABITS_BUILD_META = [
+  {
+    law: 1,
+    loopStep: 'Cue',
+    buildLaw: 'Make it obvious',
+    framework: 'Design a clear trigger — time, place, or object that says “start now.”',
+    icon: 'Eye',
+    rockTone: '#38bdf8',
+  },
+  {
+    law: 2,
+    loopStep: 'Craving',
+    buildLaw: 'Make it attractive',
+    framework: 'Pair the habit with something you enjoy so your brain wants the routine.',
+    icon: 'Sparkles',
+    rockTone: '#34d399',
+  },
+  {
+    law: 3,
+    loopStep: 'Response',
+    buildLaw: 'Make it easy',
+    framework: 'Shrink to a two-minute version — lower friction beats motivation every time.',
+    icon: 'Zap',
+    rockTone: '#2dd4bf',
+  },
+  {
+    law: 4,
+    loopStep: 'Reward',
+    buildLaw: 'Make it satisfying',
+    framework: 'Track a streak or give yourself an immediate win right after you finish.',
+    icon: 'Target',
+    rockTone: '#14b8a6',
+  },
+]
+
+export function normalizeAtomicHabitsBuild(parsed, habitTitle) {
+  const defaults = [
+    `Set a daily cue: same time and place — leave your gear visible for ${habitTitle}.`,
+    `Stack ${habitTitle} right after something you love (coffee, shower, favorite playlist).`,
+    `Start with just 2 minutes of ${habitTitle} — make the first step embarrassingly small.`,
+    `Check off each day on a wall calendar or app streak — never break the chain twice.`,
+  ]
+
+  const byLaw = new Map()
+  if (Array.isArray(parsed?.atomicHabits)) {
+    for (const item of parsed.atomicHabits) {
+      const law = Number(item.law)
+      if (law >= 1 && law <= 4 && item.suggestion) {
+        byLaw.set(law, String(item.suggestion).slice(0, 200))
+      }
+    }
+  }
+
+  return ATOMIC_HABITS_BUILD_META.map((meta, i) => ({
+    ...meta,
+    suggestion: byLaw.get(meta.law) || defaults[i],
+  }))
 }
 
 export function normalizeHabitModel(parsed) {
@@ -158,8 +221,11 @@ export function normalizeHabitModel(parsed) {
   const compute = parsed.compute || {}
   const methods = ['direct', 'steps_calories', 'workout_body', 'walking_calories']
 
+  const title = String(parsed.title || DEFAULT_MODEL.title).slice(0, 60)
+  const atomicHabits = normalizeAtomicHabitsBuild(parsed, title)
+
   return {
-    title: String(parsed.title || DEFAULT_MODEL.title).slice(0, 60),
+    title,
     subtitle: String(parsed.subtitle || DEFAULT_MODEL.subtitle).slice(0, 100),
     icon,
     goalType: goalTypes.includes(parsed.goalType) ? parsed.goalType : 'generic',
@@ -187,6 +253,7 @@ export function normalizeHabitModel(parsed) {
     milestones,
     motivation: String(parsed.motivation || DEFAULT_MODEL.motivation).slice(0, 120),
     compoundNote: String(parsed.compoundNote || '').slice(0, 100),
+    atomicHabits,
   }
 }
 

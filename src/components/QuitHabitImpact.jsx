@@ -218,7 +218,12 @@ export default function QuitHabitImpact({ model }) {
       </div>
 
       {atomicHabits?.length > 0 && (
-        <AtomicHabitsQuadrants quadrants={atomicHabits} habitName={habitName} accent={accent} />
+        <AtomicHabitsQuadrants
+          mode="break"
+          quadrants={atomicHabits}
+          habitName={habitName}
+          accent={accent}
+        />
       )}
 
       <div className="qhab-grid">

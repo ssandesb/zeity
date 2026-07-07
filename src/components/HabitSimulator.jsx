@@ -17,6 +17,7 @@ import HabitSimHorizonCard from './HabitSimHorizonCard'
 import HabitSimMilestones from './HabitSimMilestones'
 import HabitSimProfileForm from './HabitSimProfileForm'
 import HabitSimDynamicViz from './HabitSimDynamicViz'
+import AtomicHabitsQuadrants from './AtomicHabitsQuadrants'
 
 const EXAMPLES = [
   'Walk 10,000 steps every day — I want calories burned',
@@ -330,6 +331,15 @@ export default function HabitSimulator() {
                   color={accent}
                 />
               </div>
+            )}
+
+            {personalizedModel.atomicHabits?.length > 0 && (
+              <AtomicHabitsQuadrants
+                mode="build"
+                quadrants={personalizedModel.atomicHabits}
+                habitName={personalizedModel.title}
+                accent={accent}
+              />
             )}
           </div>
         </div>

@@ -70,7 +70,7 @@ export async function handler(event) {
         { role: 'user', content: userContent },
       ],
       temperature: 0.2,
-      max_completion_tokens: 1200,
+      max_completion_tokens: 1500,
       top_p: 1,
       stream: false,
       reasoning_effort: 'low',
