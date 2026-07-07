@@ -1,6 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Clock, Brain, Activity, Sun, Sparkles } from 'lucide-react'
-import { computeQuitImpact, formatImpactTime } from '../../shared/quitHabitCore.js'
+import { Clock, Brain, Activity, Sun, Sparkles, TrendingDown } from 'lucide-react'
+import {
+  formatImpactTime,
+  horizonToId,
+  runQuitSimulation,
+  QUIT_EQUIVALENTS,
+} from '../../shared/quitHabitCore.js'
+import { formatTotal } from '../utils/habitSimulation'
+import HabitSimAreaChart from './HabitSimAreaChart'
+import HabitSimMilestones from './HabitSimMilestones'
+import QuitHabitHorizonCard from './QuitHabitHorizonCard'
 
 function LowEnergySvg({ level }) {
   const fill = Math.max(8, Math.min(92, level))
@@ -73,32 +82,145 @@ function useAnimatedNumber(target, duration = 600) {
   return value
 }
 
-export default function QuitHabitImpact({ habitName, dailyMinutes, yearsProjection }) {
-  const impact = useMemo(
-    () => computeQuitImpact({ dailyMinutes, yearsProjection }),
-    [dailyMinutes, yearsProjection],
+function StatTile({ icon: Icon, label, value, unit, accent }) {
+  return (
+    <div className="qhab-stat-tile" style={{ '--qhab-accent': accent }}>
+      <Icon size={18} strokeWidth={2.2} />
+      <div>
+        <span className="qhab-stat-tile-value">{value}</span>
+        <span className="qhab-stat-tile-unit">{unit}</span>
+        <span className="qhab-stat-tile-label">{label}</span>
+      </div>
+    </div>
   )
-  const timeFmt = useMemo(() => formatImpactTime(impact.totalMinutes), [impact.totalMinutes])
+}
 
-  const animEnergyBefore = useAnimatedNumber(impact.beforeEnergy)
-  const animEnergyAfter = useAnimatedNumber(impact.afterEnergy)
+export default function QuitHabitImpact({ model }) {
+  const { habitName, dailyMinutes, motivation, accentColor, milestones } = model
+  const accent = accentColor || '#34d399'
+
+  const [selectedHorizon, setSelectedHorizon] = useState(() => horizonToId(model.yearsProjection))
+
+  const result = useMemo(() => runQuitSimulation(model), [model])
+  const selected = result.horizons.find((h) => h.id === selectedHorizon) || result.horizons[4]
+
+  const timeFmt = useMemo(() => formatImpactTime(selected.totalMinutes), [selected.totalMinutes])
+
+  const animEnergyBefore = useAnimatedNumber(selected.beforeEnergy)
+  const animEnergyAfter = useAnimatedNumber(selected.afterEnergy)
   const animDaily = useAnimatedNumber(dailyMinutes)
+
+  const chartSeries = useMemo(
+    () =>
+      result.fullSeries.slice(0, selected.days).map((s) => ({
+        cumulative: s.cumulativeMinutes / 60,
+        perfectCumulative: s.cumulativeMinutes / 60,
+      })),
+    [result.fullSeries, selected.days],
+  )
+
+  const milestoneModel = useMemo(
+    () => ({
+      milestones: milestones.map((m) => ({ at: m.atHours, label: m.label, icon: m.icon })),
+    }),
+    [milestones],
+  )
+
+  const equivStats = QUIT_EQUIVALENTS.map((eq) => ({
+    ...eq,
+    count: Math.floor(selected.totalMinutes / eq.threshold),
+  })).filter((e) => e.count > 0)
 
   return (
     <div className="qhab">
-      <header className="qhab-head">
-        <h2 className="qhab-title">If you keep {habitName}</h2>
-        <p className="qhab-sub">
-          Over <strong>{yearsProjection}</strong> {yearsProjection === 1 ? 'year' : 'years'} — and what
-          you gain by walking away.
-        </p>
-      </header>
+      <div className="hsim-hero panel qhab-hero" style={{ '--hsim-accent': accent }}>
+        <div className="hsim-hero-icon">
+          <TrendingDown size={28} strokeWidth={2.2} />
+        </div>
+        <div className="hsim-hero-text">
+          <h2>{habitName}</h2>
+          <p>
+            {animDaily} min/day — what you reclaim by letting this go.
+          </p>
+          <span className="hsim-hero-note">{motivation}</span>
+        </div>
+        <div className="hsim-hero-stat">
+          <strong>{formatTotal(selected.totalHours)}</strong>
+          <span>hours · {selected.label}</span>
+        </div>
+      </div>
+
+      <div className="hsim-viz-row panel qhab-chart-panel">
+        <div className="qhab-chart-side">
+          <h3 className="qhab-chart-title">Time regained</h3>
+          <p className="qhab-chart-sub">Cumulative hours back if you quit today</p>
+        </div>
+        <div className="hsim-viz-side qhab-chart-wrap">
+          <HabitSimAreaChart series={chartSeries} color={accent} height={100} />
+          {selected.insight?.sub && <p className="hsim-insight-sub">{selected.insight.sub}</p>}
+        </div>
+      </div>
+
+      <div className="hsim-horizons">
+        {result.horizons.map((h) => (
+          <QuitHabitHorizonCard
+            key={h.id}
+            horizon={h}
+            color={accent}
+            selected={selectedHorizon === h.id}
+            onClick={() => setSelectedHorizon(h.id)}
+          />
+        ))}
+      </div>
+
+      <div className="qhab-numbers panel">
+        <h3 className="qhab-numbers-title">By the numbers · {selected.label}</h3>
+        <div className="qhab-numbers-grid">
+          <StatTile
+            icon={Clock}
+            label="Hours regained"
+            value={formatTotal(selected.totalHours)}
+            unit="hrs"
+            accent={accent}
+          />
+          <StatTile
+            icon={Brain}
+            label="Mental energy"
+            value={`${animEnergyAfter}%`}
+            unit={`from ${animEnergyBefore}%`}
+            accent={accent}
+          />
+          <StatTile
+            icon={Sparkles}
+            label="Clear headspace"
+            value={selected.mentalHoursGained.toLocaleString()}
+            unit="hrs"
+            accent={accent}
+          />
+          <StatTile
+            icon={Sun}
+            label="Waking days back"
+            value={(selected.totalHours / 16).toFixed(1)}
+            unit="days"
+            accent={accent}
+          />
+        </div>
+        {equivStats.length > 0 && (
+          <div className="qhab-equiv-row">
+            {equivStats.map((e) => (
+              <span key={e.label} className="chip qhab-equiv-chip">
+                {e.count.toLocaleString()} {e.count === 1 ? e.label : e.plural}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
 
       <div className="qhab-grid">
         <section className="qhab-panel qhab-panel--before" aria-label="Before quitting">
           <div className="qhab-panel-tag">
             <Activity size={14} strokeWidth={2.2} />
-            <span>Before</span>
+            <span>Before · {selected.label}</span>
           </div>
           <LowEnergySvg level={animEnergyBefore} />
           <div className="qhab-stat">
@@ -116,16 +238,12 @@ export default function QuitHabitImpact({ habitName, dailyMinutes, yearsProjecti
               <span className="qhab-stat-unit">mental energy</span>
             </div>
           </div>
-          <p className="qhab-note">
-            ~<span className="qhab-stat-value--transition">{animDaily}</span> min/day drained from focus
-            and recovery.
-          </p>
         </section>
 
         <section className="qhab-panel qhab-panel--after" aria-label="After quitting">
           <div className="qhab-panel-tag qhab-panel-tag--after">
             <Sun size={14} strokeWidth={2.2} />
-            <span>After quitting</span>
+            <span>After quitting · {selected.label}</span>
           </div>
           <RisingEnergySvg level={animEnergyAfter} />
           <div className="qhab-stat">
@@ -150,11 +268,21 @@ export default function QuitHabitImpact({ habitName, dailyMinutes, yearsProjecti
             </div>
           </div>
           <p className="qhab-note qhab-note--after">
-            ~{impact.mentalHoursGained.toLocaleString()} extra hours of clear headspace over{' '}
-            {yearsProjection} {yearsProjection === 1 ? 'year' : 'years'}.
+            ~{selected.mentalHoursGained.toLocaleString()} extra hours of clear headspace.
           </p>
         </section>
       </div>
+
+      {milestones.length > 0 && (
+        <div className="panel hsim-ms-panel">
+          <h3>Milestones · {selected.label}</h3>
+          <HabitSimMilestones
+            milestones={milestoneModel.milestones}
+            total={selected.totalHours}
+            color={accent}
+          />
+        </div>
+      )}
     </div>
   )
 }

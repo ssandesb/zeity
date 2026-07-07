@@ -83,13 +83,7 @@ export default function PasstPage() {
         </div>
       )}
 
-      {model && (
-        <QuitHabitImpact
-          habitName={model.habitName}
-          dailyMinutes={model.dailyMinutes}
-          yearsProjection={model.yearsProjection}
-        />
-      )}
+      {model && <QuitHabitImpact model={model} />}
     </div>
   )
 }
