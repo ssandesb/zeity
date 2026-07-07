@@ -1,10 +1,11 @@
-import { Home, FolderOpen, Scale, ListChecks, Flame, Clock4, Telescope } from 'lucide-react'
+import { Home, FolderOpen, Scale, ListChecks, Flame, Clock4, Telescope, LayoutGrid } from 'lucide-react'
 
 const nav = [
   { id: 'home', label: 'Home', icon: Home },
   { id: 'days', label: 'My Days', icon: FolderOpen },
   { id: 'weight', label: 'Protein Tracker', icon: Scale },
   { id: 'future', label: 'Future', icon: Telescope },
+  { id: 'passt', label: 'Passt', icon: LayoutGrid, sub: true },
   { id: 'tasks', label: 'Tasks', icon: ListChecks },
   { id: 'streaks', label: 'Streaks', icon: Flame },
 ]
@@ -29,7 +30,7 @@ export default function Sidebar({ active, onNavigate, open, dayTypes, onPickDay,
           return (
             <button
               key={item.id}
-              className={`nav-item ${active === item.id ? 'active' : ''}`}
+              className={`nav-item ${active === item.id ? 'active' : ''} ${item.sub ? 'nav-sub' : ''}`}
               onClick={() => onNavigate(item.id)}
             >
               <Icon size={18} strokeWidth={2} />

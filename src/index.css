@@ -185,6 +185,11 @@ button {
   font-weight: 600;
 }
 
+.nav-item.nav-sub {
+  padding-left: 28px;
+  font-size: 13px;
+}
+
 .nav-item .badge {
   margin-left: auto;
   background: #ef4444;
