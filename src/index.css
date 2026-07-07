@@ -4090,6 +4090,45 @@ button {
   }
 }
 
+.hsim-filters-fab {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  width: fit-content;
+}
+
+@media (max-width: 860px) {
+  .hsim-filters-fab {
+    display: inline-flex;
+  }
+}
+
+.hsim-filters-head {
+  width: 100%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+}
+
+@media (max-width: 860px) {
+  .hsim-filters-head {
+    cursor: pointer;
+  }
+}
+
 .hsim-filters {
   position: sticky;
   top: 16px;

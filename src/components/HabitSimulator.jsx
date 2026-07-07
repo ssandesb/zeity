@@ -34,6 +34,10 @@ export default function HabitSimulator() {
   const [selectedHorizon, setSelectedHorizon] = useState('1y')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const [filtersOpen, setFiltersOpen] = useState(() => {
+    if (typeof window === 'undefined') return true
+    return !window.matchMedia('(max-width: 860px)').matches
+  })
 
   useEffect(() => {
     if (baseModel?.profileQuestions?.length) {
@@ -181,14 +185,33 @@ export default function HabitSimulator() {
 
       {personalizedModel && result && profileReady && (
         <div className="hsim-layout">
+          {!filtersOpen && (
+            <button
+              type="button"
+              className="hsim-filters-fab"
+              onClick={() => setFiltersOpen(true)}
+              aria-expanded={filtersOpen}
+            >
+              <SlidersHorizontal size={17} strokeWidth={2.2} />
+              <span>Filters</span>
+            </button>
+          )}
+
+          {filtersOpen && (
           <aside className="hsim-filters panel">
-            <div className="panel-head">
+            <button
+              type="button"
+              className="hsim-filters-head panel-head"
+              onClick={() => setFiltersOpen(false)}
+              aria-expanded={filtersOpen}
+            >
               <div className="ph-icon">
                 <SlidersHorizontal size={17} strokeWidth={2.2} />
               </div>
               <h3>Reality filters</h3>
-            </div>
+            </button>
 
+            <div className="hsim-filters-body">
             <label className="hsim-filter">
               <span>Adherence {filters.adherence}%</span>
               <input
@@ -244,7 +267,9 @@ export default function HabitSimulator() {
               <Info size={13} strokeWidth={2.2} />
               Estimates for motivation — not medical advice.
             </p>
+            </div>
           </aside>
+          )}
 
           <div className="hsim-main">
             <div className="hsim-hero panel" style={{ '--hsim-accent': accent }}>
