@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import { Groq } from 'groq-sdk'
+import { GoogleGenAI } from '@google/genai'
 import {
   buildChatSystemPrompt,
   normalizeAiActions,
@@ -52,6 +53,8 @@ function corsHeaders(req, res) {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const groqApiKey = env.GROQ_API_KEY || env.groq || process.env.GROQ_API_KEY || process.env.groq
+  const geminiApiKey =
+    env.GEMINI_API || env.GEMINI_API_KEY || process.env.GEMINI_API || process.env.GEMINI_API_KEY
 
   return {
     plugins: [
@@ -343,6 +346,72 @@ export default defineConfig(({ mode }) => {
               res.statusCode = 500
               res.setHeader('Content-Type', 'application/json')
               res.end(JSON.stringify({ error: 'Deutsch learn failed', details: String(e?.message || e) }))
+            }
+          })
+
+          server.middlewares.use('/api/gemini-live-token', async (req, res) => {
+            corsHeaders(req, res)
+
+            if (req.method === 'OPTIONS') {
+              res.statusCode = 204
+              res.end()
+              return
+            }
+
+            if (req.method !== 'POST') {
+              res.statusCode = 405
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify({ error: 'Method Not Allowed' }))
+              return
+            }
+
+            if (!geminiApiKey) {
+              res.statusCode = 500
+              res.setHeader('Content-Type', 'application/json')
+              res.end(
+                JSON.stringify({
+                  error: 'Missing Gemini API key in .env (GEMINI_API or GEMINI_API_KEY)',
+                }),
+              )
+              return
+            }
+
+            try {
+              const client = new GoogleGenAI({
+                apiKey: geminiApiKey,
+                httpOptions: { apiVersion: 'v1alpha' },
+              })
+
+              const expireTime = new Date(Date.now() + 30 * 60 * 1000).toISOString()
+              const newSessionExpireTime = new Date(Date.now() + 2 * 60 * 1000).toISOString()
+
+              const token = await client.authTokens.create({
+                config: {
+                  uses: 1,
+                  expireTime,
+                  newSessionExpireTime,
+                  httpOptions: { apiVersion: 'v1alpha' },
+                },
+              })
+
+              res.statusCode = 200
+              res.setHeader('Content-Type', 'application/json')
+              res.end(
+                JSON.stringify({
+                  token: token.name,
+                  expireTime,
+                  newSessionExpireTime,
+                }),
+              )
+            } catch (e) {
+              res.statusCode = 500
+              res.setHeader('Content-Type', 'application/json')
+              res.end(
+                JSON.stringify({
+                  error: 'Failed to create ephemeral token',
+                  details: String(e?.message || e),
+                }),
+              )
             }
           })
         },

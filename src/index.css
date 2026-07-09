@@ -5531,3 +5531,415 @@ button {
     justify-content: center;
   }
 }
+
+/* ── Gemini Live (Future page) ── */
+.glive {
+  margin-bottom: 28px;
+  padding: 20px;
+  background:
+    linear-gradient(135deg, rgba(79, 70, 229, 0.06) 0%, transparent 55%),
+    var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.glive-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.glive-head-left {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.glive-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.glive-pulse {
+  position: absolute;
+  inset: -3px;
+  border-radius: 14px;
+  border: 2px solid var(--accent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.glive-pulse.on {
+  animation: glive-pulse 1.8s ease-out infinite;
+}
+
+@keyframes glive-pulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+}
+
+.glive-title {
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin-bottom: 2px;
+}
+
+.glive-sub {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.45;
+  max-width: 420px;
+}
+
+.glive-status-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.glive-status {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.glive-status.connected {
+  background: rgba(22, 163, 74, 0.12);
+  color: var(--green);
+}
+
+.glive-status.connecting {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.glive-status.error {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+.glive-settings-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--text-2);
+}
+
+.glive-settings-btn:hover {
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+
+.glive-modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.glive-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.glive-mode:hover:not(:disabled) {
+  border-color: var(--line-strong);
+  color: var(--text);
+}
+
+.glive-mode.active {
+  background: var(--accent-soft);
+  border-color: rgba(79, 70, 229, 0.35);
+  color: var(--accent);
+}
+
+.glive-mode:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.glive-settings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  align-items: center;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+
+.glive-setting {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.glive-setting select {
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+.glive-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-3);
+  margin-left: auto;
+}
+
+.glive-error {
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.glive-warn {
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: rgba(245, 158, 11, 0.12);
+  color: #d97706;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.glive-body {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 16px;
+  align-items: stretch;
+}
+
+@media (max-width: 720px) {
+  .glive-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.glive-main-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.glive-transcript {
+  flex: 1;
+  min-height: 160px;
+  max-height: 280px;
+  overflow: auto;
+  padding: 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.glive-transcript-live {
+  margin-bottom: 8px;
+}
+
+.glive-transcript-log {
+  border-top: 1px dashed var(--line);
+  padding-top: 10px;
+  opacity: 0.85;
+}
+
+.glive-line {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.glive-line.live {
+  font-weight: 500;
+}
+
+.glive-line.user .glive-role {
+  color: var(--accent);
+}
+
+.glive-line.assistant .glive-role {
+  color: var(--green);
+}
+
+.glive-role {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-right: 8px;
+}
+
+.glive-empty {
+  font-size: 13px;
+  color: var(--text-3);
+  line-height: 1.5;
+}
+
+.glive-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.glive-text-input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+}
+
+.glive-text-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.glive-text-input:disabled {
+  opacity: 0.6;
+}
+
+.glive-send {
+  min-width: 44px;
+  padding: 0 14px;
+}
+
+.glive-side-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.glive-video-wrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface-3);
+  border: 1px solid var(--line);
+}
+
+.glive-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+.glive-video-wrap.on .glive-video {
+  display: block;
+}
+
+.glive-video-wrap.on .glive-video-placeholder {
+  display: none;
+}
+
+.glive-video-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--text-3);
+  font-size: 12px;
+}
+
+.glive-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.glive-connect {
+  width: 100%;
+  justify-content: center;
+}
+
+.glive-ctrl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.glive-ctrl:hover {
+  border-color: var(--line-strong);
+  color: var(--text);
+}
+
+.glive-ctrl.active {
+  background: var(--accent-soft);
+  border-color: rgba(79, 70, 229, 0.35);
+  color: var(--accent);
+}
+
+.glive-ctrl.danger {
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.glive-ctrl.danger:hover {
+  background: rgba(239, 68, 68, 0.08);
+}
+

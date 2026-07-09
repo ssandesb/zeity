@@ -18,6 +18,7 @@ import HabitSimMilestones from './HabitSimMilestones'
 import HabitSimProfileForm from './HabitSimProfileForm'
 import HabitSimDynamicViz from './HabitSimDynamicViz'
 import AtomicHabitsQuadrants from './AtomicHabitsQuadrants'
+import GeminiLivePanel from './GeminiLivePanel'
 
 const EXAMPLES = [
   'Walk 10,000 steps every day — I want calories burned',
@@ -116,6 +117,8 @@ export default function HabitSimulator() {
           <p className="page-sub">AI reads your goal — calories, core, books — and paints your path.</p>
         </div>
       </div>
+
+      <GeminiLivePanel />
 
       <div className="hsim-prompt-row">
         <div className="hsim-prompt-wrap">

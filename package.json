@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google/genai": "^2.10.0",
     "@modelcontextprotocol/server-filesystem": "^2026.1.14",
     "@supabase/supabase-js": "^2.108.0",
     "groq-sdk": "^1.2.1",

@@ -29,6 +29,11 @@
   status = 200
 
 [[redirects]]
+  from = "/api/gemini-live-token"
+  to = "/.netlify/functions/gemini-live-token"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
