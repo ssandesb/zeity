@@ -58,7 +58,7 @@ export async function handler(event) {
 
     const client = new GoogleGenAI({
       apiKey,
-      httpOptions: { apiVersion: 'v1alpha' },
+      apiVersion: 'v1alpha',
     })
 
     const expireTime = new Date(Date.now() + 30 * 60 * 1000).toISOString()

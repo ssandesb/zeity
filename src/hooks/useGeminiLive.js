@@ -26,7 +26,6 @@ function buildConfig({ mode, thinkingLevel, targetLanguage, systemPrompt }) {
     thinkingConfig: {
       thinkingLevel: thinkingLevel || 'minimal',
     },
-    contextWindowCompression: {},
     sessionResumption: {},
   }
 
@@ -62,6 +61,7 @@ export function useGeminiLive() {
   const videoIntervalRef = useRef(null)
   const videoElRef = useRef(null)
   const optionsRef = useRef({})
+  const connectedRef = useRef(false)
 
   const [status, setStatus] = useState('idle')
   const [error, setError] = useState('')
@@ -141,6 +141,7 @@ export function useGeminiLive() {
 
   const disconnect = useCallback(async () => {
     await cleanupMedia()
+    connectedRef.current = false
     if (sessionRef.current) {
       try {
         sessionRef.current.close()
@@ -175,7 +176,7 @@ export function useGeminiLive() {
         const { GoogleGenAI } = await import('@google/genai')
         const ai = new GoogleGenAI({
           apiKey: token,
-          httpOptions: { apiVersion: 'v1alpha' },
+          apiVersion: 'v1alpha',
         })
 
         playbackRef.current = new AudioPlaybackQueue()
@@ -184,14 +185,26 @@ export function useGeminiLive() {
           model,
           config,
           callbacks: {
-            onopen: () => setStatus('connected'),
+            onopen: () => {
+              connectedRef.current = true
+              setStatus('connected')
+            },
             onmessage: handleMessage,
             onerror: (e) => {
-              setError(e?.message || 'Live session error')
+              const msg = e?.message || e?.type || 'Live session error'
+              setError(msg)
               setStatus('error')
             },
-            onclose: () => {
-              setStatus('idle')
+            onclose: (e) => {
+              const code = e?.code
+              const reason = e?.reason
+              if (connectedRef.current && code !== 1000 && reason) {
+                setError(reason)
+                setStatus('error')
+              } else {
+                setStatus('idle')
+              }
+              connectedRef.current = false
               cleanupMedia()
               sessionRef.current = null
             },

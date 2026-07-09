@@ -379,7 +379,7 @@ export default defineConfig(({ mode }) => {
             try {
               const client = new GoogleGenAI({
                 apiKey: geminiApiKey,
-                httpOptions: { apiVersion: 'v1alpha' },
+                apiVersion: 'v1alpha',
               })
 
               const expireTime = new Date(Date.now() + 30 * 60 * 1000).toISOString()

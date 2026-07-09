@@ -172,7 +172,7 @@ export default function GeminiLivePanel() {
           )}
           <p className="glive-hint">
             <Volume2 size={13} strokeWidth={2.2} />
-            Use headphones to avoid echo while the mic is on.
+            After connecting, tap Mic and speak — or type below. Use headphones to avoid echo.
           </p>
         </div>
       )}
