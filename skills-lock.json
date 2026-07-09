@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "backend-development": {
+      "source": "skillcreatorai/ai-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/backend-development/SKILL.md",
+      "computedHash": "7f05a82b3c35262cb0bcd458baf8abdd2f7e5245b75a698bdd2c42484d2d33ca"
+    },
+    "composio": {
+      "source": "composiohq/skills",
+      "sourceType": "github",
+      "skillPath": "skills/composio/SKILL.md",
+      "computedHash": "b6c3b70c8d2f122bf372a0566c520d2f70a230f2e6072f45d005208a4d220e3a"
+    },
+    "frontend-design": {
+      "source": "vercel-labs/open-agents",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/frontend-design/SKILL.md",
+      "computedHash": "89a54ba7fcf22ca2e394ebc0c040c23158c2e8a0acfd63a3dfaa8436135553a2"
+    },
+    "gemini-live-api-dev": {
+      "source": "google-gemini/gemini-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gemini-live-api-dev/SKILL.md",
+      "computedHash": "eec39a301d1116a8b1bf3fea8e9998e0d1932dd413cfbc5a4705bbb288e25243"
+    },
+    "netlify-functions": {
+      "source": "netlify/context-and-tools",
+      "sourceType": "github",
+      "skillPath": "skills/netlify-functions/SKILL.md",
+      "computedHash": "239c2ea422f4b052665522dbec5b2efb4e55ce557895ab032aa9aa3690e70978"
+    }
+  }
+}
