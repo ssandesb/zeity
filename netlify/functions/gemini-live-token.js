@@ -1,4 +1,4 @@
-import { GoogleGenAI } from '@google/genai'
+import { createGeminiLiveEphemeralToken, geminiApiKeyFromEnv } from '../../shared/geminiLiveToken.js'
 
 function cors(res, origin = '*') {
   res.headers = {
@@ -17,10 +17,6 @@ function safeJsonStringify(x) {
   } catch {
     return ''
   }
-}
-
-function geminiApiKeyFromEnv(env) {
-  return env.GEMINI_API || env.GEMINI_API_KEY || ''
 }
 
 export async function handler(event) {
@@ -56,32 +52,13 @@ export async function handler(event) {
       )
     }
 
-    const client = new GoogleGenAI({
-      apiKey,
-      apiVersion: 'v1alpha',
-    })
-
-    const expireTime = new Date(Date.now() + 30 * 60 * 1000).toISOString()
-    const newSessionExpireTime = new Date(Date.now() + 2 * 60 * 1000).toISOString()
-
-    const token = await client.authTokens.create({
-      config: {
-        uses: 1,
-        expireTime,
-        newSessionExpireTime,
-        httpOptions: { apiVersion: 'v1alpha' },
-      },
-    })
+    const payload = await createGeminiLiveEphemeralToken(apiKey)
 
     return cors(
       {
         statusCode: 200,
         headers: { 'Content-Type': 'application/json' },
-        body: safeJsonStringify({
-          token: token.name,
-          expireTime,
-          newSessionExpireTime,
-        }),
+        body: safeJsonStringify(payload),
       },
       origin,
     )

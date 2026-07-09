@@ -140,20 +140,27 @@ export default function GeminiLivePanel() {
 
       {settingsOpen && (
         <div className="glive-settings">
-          <label className="glive-setting">
-            <span>Thinking</span>
-            <select
-              value={thinkingLevel}
-              onChange={(e) => setThinkingLevel(e.target.value)}
-              disabled={isConnected}
-            >
-              {THINKING_LEVELS.map((l) => (
-                <option key={l.id} value={l.id}>
-                  {l.label}
-                </option>
-              ))}
-            </select>
-          </label>
+          {mode === 'translate' ? (
+            <p className="glive-hint">
+              <Volume2 size={13} strokeWidth={2.2} />
+              Translate mode: speak in any language — Gemini replies in your target language. Tap Mic to start.
+            </p>
+          ) : (
+            <label className="glive-setting">
+              <span>Thinking</span>
+              <select
+                value={thinkingLevel}
+                onChange={(e) => setThinkingLevel(e.target.value)}
+                disabled={isConnected}
+              >
+                {THINKING_LEVELS.map((l) => (
+                  <option key={l.id} value={l.id}>
+                    {l.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
           {mode === 'translate' && (
             <label className="glive-setting">
               <span>Target language</span>
@@ -170,10 +177,12 @@ export default function GeminiLivePanel() {
               </select>
             </label>
           )}
-          <p className="glive-hint">
-            <Volume2 size={13} strokeWidth={2.2} />
-            After connecting, tap Mic and speak — or type below. Use headphones to avoid echo.
-          </p>
+          {mode === 'conversation' && (
+            <p className="glive-hint">
+              <Volume2 size={13} strokeWidth={2.2} />
+              After connecting, tap Mic and speak — or type below. Use headphones to avoid echo.
+            </p>
+          )}
         </div>
       )}
 

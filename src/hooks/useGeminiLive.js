@@ -13,7 +13,20 @@ const DEFAULT_SYSTEM =
 
 function buildConfig({ mode, thinkingLevel, targetLanguage, systemPrompt }) {
   const isTranslate = mode === 'translate'
-  const config = {
+
+  if (isTranslate) {
+    return {
+      responseModalities: ['AUDIO'],
+      translationConfig: {
+        targetLanguageCode: targetLanguage || 'en',
+        echoTargetLanguage: true,
+      },
+      inputAudioTranscription: {},
+      outputAudioTranscription: {},
+    }
+  }
+
+  return {
     responseModalities: ['AUDIO'],
     systemInstruction: {
       parts: [{ text: systemPrompt || DEFAULT_SYSTEM }],
@@ -28,15 +41,6 @@ function buildConfig({ mode, thinkingLevel, targetLanguage, systemPrompt }) {
     },
     sessionResumption: {},
   }
-
-  if (isTranslate && targetLanguage) {
-    config.translationConfig = {
-      targetLanguageCode: targetLanguage,
-      echoTargetLanguage: true,
-    }
-  }
-
-  return config
 }
 
 async function fetchEphemeralToken() {

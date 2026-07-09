@@ -1,7 +1,6 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import { Groq } from 'groq-sdk'
-import { GoogleGenAI } from '@google/genai'
 import {
   buildChatSystemPrompt,
   normalizeAiActions,
@@ -23,6 +22,7 @@ import {
   normalizeDeutschContent,
   tryParseDeutschJson,
 } from './shared/deutschLearnCore.js'
+import { createGeminiLiveEphemeralToken } from './shared/geminiLiveToken.js'
 
 function readJsonBody(req) {
   return new Promise((resolve, reject) => {
@@ -377,32 +377,10 @@ export default defineConfig(({ mode }) => {
             }
 
             try {
-              const client = new GoogleGenAI({
-                apiKey: geminiApiKey,
-                apiVersion: 'v1alpha',
-              })
-
-              const expireTime = new Date(Date.now() + 30 * 60 * 1000).toISOString()
-              const newSessionExpireTime = new Date(Date.now() + 2 * 60 * 1000).toISOString()
-
-              const token = await client.authTokens.create({
-                config: {
-                  uses: 1,
-                  expireTime,
-                  newSessionExpireTime,
-                  httpOptions: { apiVersion: 'v1alpha' },
-                },
-              })
-
+              const payload = await createGeminiLiveEphemeralToken(geminiApiKey)
               res.statusCode = 200
               res.setHeader('Content-Type', 'application/json')
-              res.end(
-                JSON.stringify({
-                  token: token.name,
-                  expireTime,
-                  newSessionExpireTime,
-                }),
-              )
+              res.end(JSON.stringify(payload))
             } catch (e) {
               res.statusCode = 500
               res.setHeader('Content-Type', 'application/json')
