@@ -31,6 +31,11 @@ function buildConfig({ mode, thinkingLevel, targetLanguage, systemPrompt }) {
     systemInstruction: {
       parts: [{ text: systemPrompt || DEFAULT_SYSTEM }],
     },
+    tools: [
+      {
+        googleSearch: {},
+      },
+    ],
     inputAudioTranscription: {},
     outputAudioTranscription: {},
     realtimeInputConfig: {

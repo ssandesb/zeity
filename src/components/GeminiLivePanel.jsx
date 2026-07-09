@@ -180,7 +180,7 @@ export default function GeminiLivePanel() {
           {mode === 'conversation' && (
             <p className="glive-hint">
               <Volume2 size={13} strokeWidth={2.2} />
-              After connecting, tap Mic and speak — or type below. Use headphones to avoid echo.
+              Google Search grounding is on in Live chat for real-time web context. Tap Mic to talk.
             </p>
           )}
         </div>
